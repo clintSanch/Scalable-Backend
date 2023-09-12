@@ -1,0 +1,64 @@
+version: '2.20.3'
+
+services:
+  app:
+    development:
+      container_name: scalable-backend-dev
+      image: scalable-backend-dev:1.0.0
+      build:
+        context: .
+        target: development
+        dockerFile: ./DockerFile
+      command: npm run start:dev  
+      volumes:
+        - .:usr/src/app
+        - /usr/src/app
+      ports:
+        - 3500:3500
+        - 80:8000
+      depends_on:
+        db:database  
+      env_file:
+        - .env  
+
+    production:     
+      container_name: scalable-backend-prod
+      image: scalable-backend-prod:1.0.0
+      build:
+        context: .
+        target: production
+        dockerFile: ./DockerFile
+      command: npm run start:prod  
+      volumes:
+        -
+      ports:
+        - 3000:3000
+        - 80:8000
+      depends_on:
+        db:database
+
+
+  database:
+    container_name: name
+    image: imageName
+    build:
+      context:
+      dockerfile: ./DockerFile
+    environment:
+      - postgresDB=${}
+      - postgres_User= ${}
+      - postgres_Password= ${}
+      - PG_DATA: /var/lib/postgresql/data
+    volumes:
+      -pgData: /var/lib/postgresql/data
+    ports:
+      -5432:5432
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  networks:
+    - nesjs-networks    

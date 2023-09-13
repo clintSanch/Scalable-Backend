@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI(test, build, deply, and push docker image)
 
 on:
   push:
@@ -8,11 +8,22 @@ on:
 
 jobs:
 
-  build:
+  building and testing:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    -name: Test
+     run:|
+       docker run --rm
+       
+    -name: build
+      run: |
+      docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: deploy
+      

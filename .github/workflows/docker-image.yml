@@ -1,4 +1,4 @@
-name: Docker Image CI(test, build, deply, and push docker image)
+name: Docker Image CI(test, build, deploy, and push docker image)
 
 on:
   push:

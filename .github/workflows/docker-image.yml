@@ -13,17 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: name actions
     - uses: actions/checkout@v3
+    
     -name: Test
      run:|
+     echo --running test cases--
        docker run --rm
+     echo --tests completed-- 
        
     -name: build
       run: |
+      echo -- building the image--
       docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      echo -- done with building--
 
   deploy:
     runs-on: ubuntu-latest
     steps:
     - name: deploy
+      run: |
+      echo --deploying to either vercel or docker repo--
+      echo --done with deployment--
       

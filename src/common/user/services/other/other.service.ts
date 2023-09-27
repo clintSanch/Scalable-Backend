@@ -4,13 +4,13 @@ import { User } from 'src/database/database/userEntity/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class LoginService {
+export class OtherService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async login(): Promise<User> {
+  async findUserById(): Promise<User> {
     return;
   }
 }

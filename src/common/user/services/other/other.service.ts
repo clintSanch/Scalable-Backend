@@ -13,4 +13,10 @@ export class OtherService {
   async findUserById(): Promise<User> {
     return;
   }
+
+  // Here we're going to set refresh-token to null
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async logout(userId: string) {
+    return;
+  }
 }

@@ -20,7 +20,7 @@ export class UserController {
     return;
   }
 
-  /* post request*/
+  /** post request*/
   @Post('register')
   addUser(@Body() userDto: UserDetails) {
     return this.registerservice.registerUser(userDto);
@@ -42,5 +42,11 @@ export class UserController {
     const userProfileDTO.email = user.email;
     
     return userProfileDTO;
+  }
+
+  @Get('logout')
+  logout(@Req() request: Request) {
+
+    return;
   }
 }

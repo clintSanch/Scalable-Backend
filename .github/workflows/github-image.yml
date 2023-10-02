@@ -1,14 +1,21 @@
-name: CI(test, build, deploy, and push image) github container registry
+name: CI(test, build, deploy, and push image) ghcr.io
 
 on:
     push:
       branches: [ "master" ]
+      path: ["Dockerfile", ".github/workflows/github-image.yml"]
     pull_request:
       branches: [ "master" ]
 
 env:
     REGISTRY: ghcr.io
-    IMAGE_NAME: ${{github.repository}}      
+    IMAGE_NAME: ${{github.repository}}
+    DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+    GITHUB_TOKEN: ${{secrets.CONTAINER_REGISTRY_PAT}}
+    GITHUB_USER: ${{github.actor}}
+    IMAGE_NAME: ${{}}
+    IMAGE_VERSION: ${{}}
+
 
 jobs:
 
@@ -21,28 +28,25 @@ jobs:
             packages: write
 
         steps:
-        - name: checkout code
+        - name: checkout master
         - uses: actions/checkout@v3
 
+        - name: build and tag the image
+        - uses: actions/checkout@3
+           run: |
+           docker build . \
+           --tag ghcr.io/$GITHUB_USER/$IMAGE_NAME:$IMAGE_VERSION
+
         -name: login to container registry
-        -uses: docker/login-action@v4
-        with:
-            registry: ${{env.REGISTRY}}
-            username: ${{github.actor}}
-            password: ${{secrets.GIT_AUTH_TOKEN}}
-
-        -name: Extract metadata (tags, labels) for Docker
-        -id: meta
-        -uses: docker/metadata-action@9
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        -uses: actions/chechout@v3
+         run: |
+          docker login ghcr.io -u $GITHUB_USER -p ${{secrets.CONTAINER_REGISTRY_PAT}}
           
           
-        -name: build and push docker image
-        -uses: docker/build-push-action@v4
-        with:
-            context: .
-            push: true  
-
-
+        -name: Publish the image to Github Container Registry
+        -uses: actions/checkout@v3
+          run: |
+          # if it wants initial authentiacation then
+          # docker login ghcr.io -u GITHUB_USER -p ${{secrets.CONTAINER_REGISTRY_PAT}}
+          docker push ghcr.io/$GITHUB_USER/$IMAGE_NAME:$IMAGE_VERSION
 

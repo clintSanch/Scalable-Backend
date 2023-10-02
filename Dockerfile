@@ -1,6 +1,8 @@
 # Base image
 FROM node:18-alpine
 
+LABEL org.opencontainers.image.source="https://github.com/clintSanch/Scalable-Backend"
+
 # Create app directory
 WORKDIR /usr/src/app
 

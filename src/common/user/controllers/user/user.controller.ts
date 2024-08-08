@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Req, Res, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
 import { LoginService } from '../../services/login/login.service';
 import { RegisterService } from '../../services/register/register.service';
-import { Request, request, response } from 'express';
 import { UserDetails } from 'src/models/user/user-details/user-details';
 import { OtherService } from '../../services/other/other.service';
+import { UserProfileDTO } from '../../Dtos/profileDTO';
+import { CreateUserDTO } from '../../Dtos/userDTO';
+import { LoginDto } from '../../Dtos/loginDTO';
 
 /** user.controller.ts is responsible for accepting HTTP requests from the client and providing a response*/
 @Controller('user')
@@ -16,37 +26,46 @@ export class UserController {
 
   /**get request */
   @Get('id')
-  getUser(@Req() request: Request) {
-    return;
+  @HttpCode(HttpStatus.OK)
+  async getUser(userId: number): Promise<UserDetails> {
+    const user = await this.otherservice.findUserById(userId);
+    return user;
   }
 
-  /** post request*/
-  @Post('register')
-  addUser(@Body() userDto: UserDetails) {
-    return this.registerservice.registerUser(userDto);
+  /** post request or creating new records*/
+  @Post('/signUp')
+  @HttpCode(HttpStatus.OK)
+  async addUser(@Body() userDto: CreateUserDTO): Promise<CreateUserDTO> {
+    const data = await this.registerservice.registerUser(userDto);
+    return data;
   }
 
-  @Post('login')
-  login(@Body() userDTO: UserDetails){
-
-    return;
+  @Post('/signIn')
+  @HttpCode(HttpStatus.OK)
+  login(@Body() loginDto: LoginDto): Promise<LoginDto> {
+    return this.loginservice.login(
+      loginDto.username,
+      loginDto.email,
+      loginDto.password,
+    );
   }
 
   @Get('id/profile')
-  getUserProfile(@Param('id') userId: number): UserDetails{
+  @HttpCode(HttpStatus.OK)
+  async getUserProfile(
+    @Param('id') profileDto: UserProfileDTO,
+  ): Promise<UserProfileDTO> {
+    const user = this.otherservice.findUserByEmail();
+    return user;
+  }
 
-    const user = this.otherservice.findUserById(userId);
-
-    const userProfileDTO = new UserDetails();
-    const userProfileDTO.username = user.name;
-    const userProfileDTO.email = user.email;
-    
-    return userProfileDTO;
+  @Get('')
+  getUserLocation() {
+    return this;
   }
 
   @Get('logout')
-  logout(@Req() request: Request) {
-
+  logout() {
     return;
   }
 }

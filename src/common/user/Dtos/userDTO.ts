@@ -1,29 +1,33 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { User } from '../user/user.interface';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { UserEntity } from 'src/database/database/userEntity/user.entity';
 
-//DTO(Data Transfer Object) --UserDTO ---trying to convert model class to dto
-//DTO(validation checkpoint) --ensuring the accuracy and consistency of data as it traverses different components of the application
-export class UserDetails implements User {
-  @IsNotEmpty()
+export class CreateUserDTO {
   @IsString()
+  @IsNotEmpty()
   username: string;
-  @IsNotEmpty()
   @IsNumber()
+  @IsNotEmpty()
   id: number;
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   firstname: string;
+  @IsString()
   @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   lastname: string;
+  @IsString()
   @IsNotEmpty()
-  @IsEmail()
-  @IsEmail()
   email: string;
-  @IsNotEmpty()
   @IsNumber()
+  @IsNotEmpty()
   phonenumber: number;
+  @IsString()
+  @IsNotEmpty()
+  gender: string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 
   constructor(userEntity: UserEntity) {
     this.username = userEntity.username;

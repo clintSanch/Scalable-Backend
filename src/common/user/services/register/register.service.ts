@@ -1,18 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Repository } from 'typeorm';
-import { User } from 'src/database/database/userEntity/user.entity';
+import { UserEntity } from 'src/database/database/userEntity/user.entity';
 
 @Injectable()
 export class RegisterService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-  async registerUser(): Promise<User> {
-    return;
+  async registerUser(user: UserEntity): Promise<UserEntity> {
+    try {
+      const createdUser = await this.userRepo.create(user);
+      return createdUser;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

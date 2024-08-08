@@ -13,7 +13,6 @@ env:
     DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
     GITHUB_TOKEN: ${{secrets.CONTAINER_REGISTRY_PAT}}
     GITHUB_USER: ${{github.actor}}
-    IMAGE_NAME: ${{}}
     IMAGE_VERSION: ${{}}
 
 
@@ -31,11 +30,23 @@ jobs:
         - name: checkout master
         - uses: actions/checkout@v3
 
+
+        - name: format repository name
+        - uses: actions/github-script@v4
+          id: repo-slug
+          with:
+            result-encoding: string
+            script: return 'ghcr.io/$IMAGE_NAME.toLowercase()'
+
+
         - name: build and tag the image
         - uses: actions/checkout@3
+        - uses: actions/github-script@v4
+           with: 
+            result-encoding: string
            run: |
-           docker build . \
-           --tag ghcr.io/$GITHUB_USER/$IMAGE_NAME:$IMAGE_VERSION
+            docker build . \
+            --tag ghcr.io/$GITHUB_USER/$IMAGE_NAME.toLowercase():$IMAGE_VERSION
 
         -name: login to container registry
         -uses: actions/chechout@v3
@@ -45,8 +56,9 @@ jobs:
           
         -name: Publish the image to Github Container Registry
         -uses: actions/checkout@v3
+        -uses: actions/github-script@v4
           run: |
           # if it wants initial authentiacation then
           # docker login ghcr.io -u GITHUB_USER -p ${{secrets.CONTAINER_REGISTRY_PAT}}
-          docker push ghcr.io/$GITHUB_USER/$IMAGE_NAME:$IMAGE_VERSION
+          docker push ghcr.io/$GITHUB_USER/$IMAGE_NAME.toLowercase():$IMAGE_VERSION
 

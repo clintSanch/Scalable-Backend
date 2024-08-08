@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -11,10 +12,12 @@ async function bootstrap() {
       options: {
         package: ['user', 'product'],
         protoPath: join(__dirname, ''),
-        url: 'localhost:5000',
+        url: 'https://example.scalable-backend.com:5000',
       },
     },
   );
+  // ValidationPipe enable auto-validation and ensure that all endpoints are protected from receiving incorrect data
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen();
 }
 bootstrap();

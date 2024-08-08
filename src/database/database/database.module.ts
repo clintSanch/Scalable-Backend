@@ -1,24 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { DbService } from './db/db.service';
 
 @Global()
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: '',
-      port: parseInt(''),
-      username: '',
-      password: '',
-      database: '',
-      entities: [],
-      synchronize: true,
-    }),
-  ],
-  providers: [],
+  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' })],
+  providers: [DbService],
   controllers: [],
-  exports: [],
+  exports: [DbService],
 })
 export class DatabaseModule {}

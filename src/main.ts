@@ -4,6 +4,18 @@ import { AppModule } from './app.module';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 
+import dotenv from 'dotenv';
+
+process.env.NODE_ENV = 'production';
+/**dotenv.config( if(process.env.NODE_ENV = 'production'){
+  return { path: '/.env.production'}
+} else if(process.env.NODE_ENV = 'staging'){
+  return { path: '/.env.staging'}
+} else if(process.env.NODE_ENV = 'development'){
+  return { path: '/.env.development'}
+});**/
+dotenv.config({ path: '/.env.production' });
+
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,

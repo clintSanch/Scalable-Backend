@@ -26,18 +26,17 @@ jobs:
     - name: build and tag image
     - uses: docker/build-push-action@v4
       run: |
-      docker build . \
-      --tag $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_VERSION
+       docker build . \ --tag $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_VERSION
 
     -name: login to docker hub/container
     -uses: docker/login-action@v4
-      run: |
-      docker login -u $DOCKER_USERNAME -p DOCKER_PASSWORD
+    run: |
+       docker login -u $DOCKER_USERNAME -p DOCKER_PASSWORD
     
         
     -name: Publishing the image to Dockerhub/registry
     -uses: docker/build-push-action@v5
-      run: |
+    run: |
       docker push $DOCKER_USERNAME/$DOCKER_IMAGE:$IMAGE_VERSION
      
 

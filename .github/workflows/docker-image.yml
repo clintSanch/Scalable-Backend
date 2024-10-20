@@ -4,7 +4,7 @@ env:
   DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
   IMAGE_NAME: ${{github.repository}}
-  IMAGE_VERSION: ${{}}
+  IMAGE_VERSION: ${{github}}
 
 on:
   push:
@@ -28,6 +28,9 @@ jobs:
       run: |
        docker build . \ --tag $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_VERSION
 
+    - name: artefacts
+    - dist/**   
+
     -name: login to docker hub/container
     -uses: docker/login-action@v4
     run: |
@@ -43,8 +46,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: deploy
+    - name: deploy to aws S3 bucket
       run: |
-        echo --deploying to either vercel or docker repo--
+        echo --deploying to either vercel or docker or S3 bucket repo--
         echo --done with deployment--
       

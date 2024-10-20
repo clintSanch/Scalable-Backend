@@ -45,9 +45,8 @@ services:
       context:
       dockerfile: ./DockerFile
     environment:
-      - postgresDB=${}
-      - postgres_User= ${}
-      - postgres_Password= ${}
+      - postgres_User=postgres
+      - postgres_Password=postgres
       - PG_DATA: /var/lib/postgresql/data
     volumes:
       -pgData: /var/lib/postgresql/data
@@ -60,5 +59,8 @@ services:
       timeout: 5s
       retries: 5
 
+  volumes:
+    pgData:    
+
   networks:
-    - nesjs-networks    
+    - nestjs-networks    

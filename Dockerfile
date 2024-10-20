@@ -1,5 +1,5 @@
 # Base image
-FROM node:18-alpine
+FROM node:18-alpine as buider
 
 LABEL org.opencontainers.image.source="https://github.com/clintSanch/Scalable-Backend"
 
@@ -21,4 +21,4 @@ RUN npm run build
 EXPOSE 3500
 
 # Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+CMD ["node", "dist/main.js"]

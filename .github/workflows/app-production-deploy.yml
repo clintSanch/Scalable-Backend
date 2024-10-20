@@ -1,0 +1,4 @@
+name: deployment of final docker build image/artifact to aws-ec2 server
+env:
+on:
+jobs:

@@ -1,0 +1,4 @@
+name: test deployment against real data in isolation
+env:
+on:
+jobs:

@@ -1,0 +1,8 @@
+name: ci/cd, test && deploy fullstack artefacts/images to aws-s3 bucket
+on:
+  workflow_dispatch:
+jobs:
+  testing e2e workflow:
+    runs-on: ubuntu-latest
+
+    steps:

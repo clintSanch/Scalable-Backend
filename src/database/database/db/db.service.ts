@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { Pool } from 'pg';
-import { retry } from 'rxjs';
+import pg from 'pg';
+const { Pool } = pg;
 
 @Injectable()
 export class DbService {
@@ -10,26 +10,30 @@ export class DbService {
 
   private readonly URL = `postgres://username:password@host/database?options=project%3D${this.ENDPOINT_ID}`;
 
-  pool = new Pool({
+  const pool = new Pool({
     connectionString: this.URL,
     idleTimeoutMillis: 10000,
     connectionTimeoutMillis: 90000,
-    user: this.config_service.get<string>('PGUSER'),
-    password: this.config_service.get<string>('PGPASSWORD'),
-    host: this.config_service.get<string>('PGHOST'),
-    database: this.config_service.get<string>('PDDATABASE'),
-    port: this.config_service.get<number>('port'),
     ssl: this.config_service.get<boolean>('sslmode'),
   });
 
-  async connection_pool() {
-    const connection = await this.pool.connect();
-    connection.setMaxListeners(1000);
 
-    this.pool.on('error', () => {
-      retry(1);
-    });
+// the pool will emit an error on behalf of any idle clients
+// it contains if a backend error or network partition happens
+  pool.on('error', (err: any, client) => {
+    return 
+  })
 
-    await this.pool.end();
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+    const res = await client.query({});
+    await client.query('COMMIT');
+  }catch(e){
+    await client.query('ROLLBACK');
+    throw e;
+  }finally{
+    client.release();
   }
 }

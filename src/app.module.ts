@@ -6,6 +6,9 @@ import { UserModule } from './common/user/user.module';
 import { ProductsModule } from './common/products/products.module';
 import { DatabaseModule } from './database/database/database.module';
 import { AuthModule } from './authentication/auth/auth.module';
+import { MpesaModule } from './common/mpesa/mpesa/mpesa.module';
+import { AirtelmoneyModule } from './common/airtelmoney/airtelmoney/airtelmoney.module';
+import { StripeModule } from './common/stripe/stripe/stripe.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -15,6 +18,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ProductsModule,
     DatabaseModule,
     AuthModule,
+    MpesaModule,
+    AirtelmoneyModule,
+    StripeModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

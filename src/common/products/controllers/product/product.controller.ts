@@ -9,6 +9,7 @@ export class ProductController {
   GetProducts() {
     return this.productService;
   }
+
   @Post()
   AddProduct(@Req() req: Request, @Res() res: Response) {
     this.productService.addProduct();
@@ -17,6 +18,7 @@ export class ProductController {
     // to update the status code
     //return res.status(205).json({ id: req.body.id})
   }
+
   @Get(':id')
   GetProductById(@Param() param: any) {
     return this.productService.getProductById();

@@ -7,7 +7,7 @@ export class ProductController {
 
   @Get()
   GetProducts() {
-    return this.productService;
+    return this.productService.getProducts();
   }
 
   @Post()

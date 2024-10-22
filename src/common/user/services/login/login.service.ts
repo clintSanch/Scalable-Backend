@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserDbService } from 'src/database/database/db/user-db/user-db.service';
 import { UserEntity } from 'src/database/database/userEntity/user.entity';
 import { Equal, Repository } from 'typeorm';
 
@@ -14,6 +15,7 @@ export class LoginService {
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
     private jwtService: JwtService,
+    private userData: UserDbService,
   ) {}
 
   async login(username: string, email: string, password: string): Promise<any> {
